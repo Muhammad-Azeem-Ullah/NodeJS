@@ -1,23 +1,4 @@
 
-/*
-//
-
-Assignment : 01
-Assigned By : Osama Rana
-Date : 15-10-2018
-Description : 
-
-Topic : Generate n number on coupon and save it in a database via Mongodb
-Url : "/generate-coupons"
-Parameters : coupon_size ( Numbers of coupons you want to generate)
-
-
-Topic : Redeem coupon and show all remains coupons save from database via Mongodb
-Url : "/redeem-coupon"
-Parameters : coupon ( Name of coupon you want to redeem)
-
-//
-*/
 
 var http = require('http');
 var MongoClient = require('mongodb').MongoClient;
@@ -56,17 +37,25 @@ app.post("/generate-coupons", function(request, response) {
 
       }
 
-      dbo.createCollection("Coupons");
+      dbo.createCollection("Coupons" , function(err, res) {
 
-      dbo.collection("Coupons").insertMany(coupons, function(err, res) {
-        if (err) throw err;
-        response.write(  coupon_size +" Coupons Created Successfully\n");
-        coupons.forEach(function(element) {
-          response.write( element.name + "\n" );
-          });
-        response.end();
-      
+        dbo.collection("Coupons").insertMany(coupons, function(err, res) {
+          if (err) throw err;
+          response.write(  coupon_size +" Coupons Created Successfully\n");
+          coupons.forEach(function(element) {
+            response.write( element.name + "\n" );
+            });
+          response.end();
+        
+        });
+
+
+
+
+
       });
+
+   
     });
     console.log("Post"); //This prints the JSON document received (if it is a JSON document)
  
@@ -90,7 +79,7 @@ app.post("/generate-coupons", function(request, response) {
 
       dbo.collection("Coupons").find(coupon).toArray(function(err, result) {
         if (err) throw err;
-        console.log( "working" + result.length );
+      
         if( result.length > 0 )
         {
           dbo.collection("Coupons").deleteOne(coupon, function(err, obj) {
@@ -106,12 +95,17 @@ app.post("/generate-coupons", function(request, response) {
             });
           });
         }
-        console.log( result );
+        else
+        {
+          response.end("Invalid Coupon.Try Again");
+
+        }
+  
     
       
       });
     });
-    console.log("Post"); //This prints the JSON document received (if it is a JSON document)
+   
  
   });
  
