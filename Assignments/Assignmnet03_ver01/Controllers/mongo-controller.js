@@ -44,7 +44,7 @@ module.exports.get_all_coupons =  function get_all_coupons( ws )
       output += element.name + "<br>";
       });
       ws.send(JSON.stringify({
-        mode : 'generate',
+        mode : 'redeem',
         status : '200' ,
         response : output
       }));

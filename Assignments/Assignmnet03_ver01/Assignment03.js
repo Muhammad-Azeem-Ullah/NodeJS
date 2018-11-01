@@ -43,9 +43,8 @@ database_promise
         if( msg_obj.mode == "generate" )
         {
           coupon_count           = msg_obj.size;
-          coupons               = controller_generate_coupon.generate_coupon( coupon_count );
-          controller_mongo.save_generated_coupons( coupons );
-          controller_generate_coupon.send_coupons_to_ws( coupons , ws );
+          coupons               = controller_generate_coupon.generate_coupon( coupon_count , ws );
+        
        
          
         }
